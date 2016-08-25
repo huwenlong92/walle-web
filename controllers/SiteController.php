@@ -29,7 +29,8 @@ class SiteController extends Controller
     /**
      * User login
      */
-    public function actionLogin() {
+    public function actionLogin()
+    {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -57,7 +58,8 @@ class SiteController extends Controller
     /**
      * User signup
      */
-    public function actionSignup() {
+    public function actionSignup()
+    {
         $user = new User(['scenario' => 'signup']);
         if ($user->load(Yii::$app->request->post())) {
             $user->status = User::STATUS_ACTIVE;
@@ -87,7 +89,7 @@ class SiteController extends Controller
     public function actionConfirmEmail($token)
     {
         $user = User::find()->emailConfirmationToken($token)->one();
-        if ($user!==null && $user->removeEmailConfirmationToken(true)) {
+        if ($user !== null && $user->removeEmailConfirmationToken(true)) {
             Yii::$app->getUser()->login($user);
             return $this->goHome();
         }
@@ -138,11 +140,13 @@ class SiteController extends Controller
     }
 
 
-    public function actionSearch() {
+    public function actionSearch()
+    {
 
     }
 
-    public function actionError() {
+    public function actionError()
+    {
         if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
             return '';
         }

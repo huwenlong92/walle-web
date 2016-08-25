@@ -10,7 +10,8 @@ namespace app\components;
 
 use \app\models\Project;
 
-class Repo extends Command {
+class Repo extends Command
+{
 
     /**
      * 获取版本管理句柄
@@ -19,7 +20,8 @@ class Repo extends Command {
      * @return Git|Svn
      * @throws \Exception
      */
-    public static function getRevision($conf) {
+    public static function getRevision($conf)
+    {
         switch ($conf->repo_type) {
             case Project::REPO_GIT:
                 return new Git($conf);

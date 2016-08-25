@@ -11,19 +11,22 @@ use app\models\forms\UserResetPasswordForm;
 use app\models\forms\AddUserForm;
 use yii\data\Pagination;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     // 头像大小限制200k
     const AVATAR_SIZE = 200000;
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $user = User::findOne($this->uid);
         return $this->render('index', [
             'user' => $user,
         ]);
     }
 
-    public function actionAvatar() {
+    public function actionAvatar()
+    {
         $fileParts = pathinfo($_FILES['avatar']['name']);
         if ($_FILES['avatar']['error']) {
             $this->renderJson([], self::FAIL, yii::t('user', 'upload failed'));
@@ -36,11 +39,11 @@ class UserController extends Controller {
                 'types' => join(', ', \Yii::$app->params['user.avatar.extension'])
             ]));
         }
-        $tempFile   = $_FILES['avatar']['tmp_name'];
-        $baseName   = sprintf('%s-%d.%s', date("YmdHis", time()), rand(10, 99), $fileParts['extension']);
-        $newFile    = User::AVATAR_ROOT . $baseName;
-        $urlFile    = GlobalHelper::formatAvatar($baseName);
-        $targetFile = sprintf("%s/web/%s", rtrim(\Yii::$app->basePath, '/'),  ltrim($newFile, '/'));
+        $tempFile = $_FILES['avatar']['tmp_name'];
+        $baseName = sprintf('%s-%d.%s', date("YmdHis", time()), rand(10, 99), $fileParts['extension']);
+        $newFile = User::AVATAR_ROOT . $baseName;
+        $urlFile = GlobalHelper::formatAvatar($baseName);
+        $targetFile = sprintf("%s/web/%s", rtrim(\Yii::$app->basePath, '/'), ltrim($newFile, '/'));
         $ret = move_uploaded_file($tempFile, $targetFile);
         if ($ret) {
             $user = User::findOne($this->uid);
@@ -51,7 +54,8 @@ class UserController extends Controller {
         $this->renderJson(['url' => $urlFile], !$ret, $ret ?: yii::t('user', 'update avatar failed'));
     }
 
-    public function actionAudit() {
+    public function actionAudit()
+    {
         $this->validateAdmin();
 
         $apply = User::getInactiveAdminList();
@@ -65,7 +69,8 @@ class UserController extends Controller {
     /**
      * 用户管理
      */
-    public function actionList($page = 1, $size = 10) {
+    public function actionList($page = 1, $size = 10)
+    {
         $userList = User::find()->orderBy('id desc');
         $kw = \Yii::$app->request->post('kw');
         if ($kw) {
@@ -87,7 +92,8 @@ class UserController extends Controller {
      * @return string
      * @throws \Exception
      */
-    public function actionDeleteAdmin($id) {
+    public function actionDeleteAdmin($id)
+    {
         $this->validateAdmin();
         $user = $this->findModel($id);
 
@@ -101,7 +107,8 @@ class UserController extends Controller {
      * @return string
      * @throws \Exception
      */
-    public function actionActiveAdmin($id) {
+    public function actionActiveAdmin($id)
+    {
         $this->validateAdmin();
         $user = $this->findModel($id);
 
@@ -135,7 +142,8 @@ class UserController extends Controller {
      * @return Notification the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
@@ -148,7 +156,8 @@ class UserController extends Controller {
      *
      * @return json
      */
-    public function actionToAdmin($uid) {
+    public function actionToAdmin($uid)
+    {
         $this->validateAdmin();
         if ($uid) {
             User::updateAll(['role' => User::ROLE_ADMIN], ['id' => $uid]);
@@ -162,7 +171,8 @@ class UserController extends Controller {
      *
      * @return  json
      */
-    public function actionToDev($uid) {
+    public function actionToDev($uid)
+    {
         $this->validateAdmin();
         if ($uid) {
             User::updateAll(['role' => User::ROLE_DEV], ['id' => $uid]);
@@ -176,7 +186,8 @@ class UserController extends Controller {
      *
      * @return  json
      */
-    public function actionBan($uid) {
+    public function actionBan($uid)
+    {
         $this->validateAdmin();
         if ($uid) {
             User::updateAll(['status' => User::STATUS_INVALID], ['id' => $uid]);
@@ -190,7 +201,8 @@ class UserController extends Controller {
      *
      * @return  json
      */
-    public function actionUnBan($uid) {
+    public function actionUnBan($uid)
+    {
         $this->validateAdmin();
         if ($uid) {
             User::updateAll(['status' => User::STATUS_ACTIVE], ['id' => $uid]);
@@ -204,7 +216,8 @@ class UserController extends Controller {
      *
      * @return json
      */
-    public function actionDelete($uid) {
+    public function actionDelete($uid)
+    {
         $this->validateAdmin();
         $user = User::findOne($uid);
         if ($user) {
@@ -219,7 +232,8 @@ class UserController extends Controller {
      *
      * @return   json
      */
-    public function actionRename($realName, $uid) {
+    public function actionRename($realName, $uid)
+    {
         $this->validateAdmin();
         if ($realName && $uid) {
             $res = User::updateAll(['realname' => $realName], ['id' => $uid]);
@@ -231,11 +245,12 @@ class UserController extends Controller {
     /**
      * 新增用户
      */
-    public function actionAdd() {
+    public function actionAdd()
+    {
         $this->validateAdmin();
         $model = new AddUserForm();
 
-        if ($model->load(Yii::$app->request->post()) ) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 Yii::$app->mail->compose('accountNotice', ['user' => $user])
                     ->setFrom(Yii::$app->mail->messageConfig['from'])
@@ -244,8 +259,7 @@ class UserController extends Controller {
                     ->send();
 
                 return $this->redirect('@web/user/list');
-            }
-            else {
+            } else {
                 throw new \Exception(yii::t('user', 'email exists'));
             }
         }

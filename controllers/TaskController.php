@@ -9,7 +9,8 @@ use app\models\Task;
 use app\models\Project;
 use app\models\Group;
 
-class TaskController extends Controller {
+class TaskController extends Controller
+{
 
     protected $task;
 
@@ -20,7 +21,8 @@ class TaskController extends Controller {
      * @param int $size
      * @return string
      */
-    public function actionIndex($page = 1, $size = 10) {
+    public function actionIndex($page = 1, $size = 10)
+    {
         $size = $this->getParam('per-page') ?: $size;
         $list = Task::find()
             ->with('user')
@@ -43,7 +45,7 @@ class TaskController extends Controller {
 
         $pages = new Pagination(['totalCount' => $tasks->count(), 'pageSize' => $size]);
         return $this->render('list', [
-            'list'  => $list,
+            'list' => $list,
             'pages' => $pages,
             'audit' => $auditProjects,
         ]);
@@ -55,7 +57,8 @@ class TaskController extends Controller {
      * @param $projectId 没有projectId则显示列表
      * @return string
      */
-    public function actionSubmit($projectId = null) {
+    public function actionSubmit($projectId = null)
+    {
 
         if (!$projectId) {
             // 显示所有项目列表
@@ -109,7 +112,8 @@ class TaskController extends Controller {
      * @return string
      * @throws \Exception
      */
-    public function actionDelete($taskId) {
+    public function actionDelete($taskId)
+    {
         $task = Task::findOne($taskId);
         if (!$task) {
             throw new \Exception(yii::t('task', 'unknown deployment bill'));
@@ -131,7 +135,8 @@ class TaskController extends Controller {
      * @return string
      * @throws \Exception
      */
-    public function actionRollback($taskId) {
+    public function actionRollback($taskId)
+    {
         $this->task = Task::findOne($taskId);
         if (!$this->task) {
             throw new \Exception(yii::t('task', 'unknown deployment bill'));
@@ -176,7 +181,8 @@ class TaskController extends Controller {
      * @param $id
      * @param $operation
      */
-    public function actionTaskOperation($id, $operation) {
+    public function actionTaskOperation($id, $operation)
+    {
         $task = Task::findOne($id);
         if (!$task) {
             static::renderJson([], -1, yii::t('task', 'unknown deployment bill'));

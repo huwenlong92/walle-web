@@ -14,7 +14,8 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use app\components\Command;
 
-class WalleController extends Controller {
+class WalleController extends Controller
+{
 
     public $writablePaths = [
         '@app/runtime',
@@ -28,7 +29,8 @@ class WalleController extends Controller {
     /**
      * checkout the current version 查看版本
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         printf("\n\033[32mwalle-web %s (built: %s)\033[0m\nCopyright (c) 2015-2016 The walle-web Group.\nGet Help from team@walle-web.io. Enjoy It.\n\n",
             Yii::$app->params['version'], Yii::$app->params['buildTime']);
     }
@@ -38,7 +40,8 @@ class WalleController extends Controller {
      *
      * @throws yii\console\Exception
      */
-    public function actionUpgrade() {
+    public function actionUpgrade()
+    {
         $commander = new Command(['console']);
         // stash save local change 暂存本地修改
         echo 'stash save local change 暂存本地修改: git stash save ...', PHP_EOL;
@@ -62,7 +65,8 @@ class WalleController extends Controller {
      *
      * @throws yii\console\Exception
      */
-    public function actionSetup() {
+    public function actionSetup()
+    {
         // create dir 创建目录
         echo 'create dir 创建目录...', PHP_EOL;
         $this->createDir();
@@ -80,7 +84,8 @@ class WalleController extends Controller {
     /**
      * create dir 创建目录
      */
-    protected function createDir() {
+    protected function createDir()
+    {
         $mkdirPaths = [
             yii::$app->params['log.dir'],
             yii::$app->params['ansible_hosts.dir'],
@@ -96,7 +101,8 @@ class WalleController extends Controller {
     /**
      * set writable 设置可写权限
      */
-    protected function setWritable() {
+    protected function setWritable()
+    {
         $this->writablePaths[] = yii::$app->params['log.dir'];
         $this->writablePaths[] = yii::$app->params['ansible_hosts.dir'];
         foreach ($this->writablePaths as $writable) {
@@ -109,7 +115,8 @@ class WalleController extends Controller {
     /**
      * set executable 设置可执行权限
      */
-    protected function setExecutable() {
+    protected function setExecutable()
+    {
         foreach ($this->executablePaths as $executable) {
             $executable = Yii::getAlias($executable);
             Console::output("Setting executable: {$executable}");

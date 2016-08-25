@@ -15,8 +15,8 @@ $this->title = $project->name . yii::t('conf', 'detection');
 </div>
 
 <script>
-    jQuery(function($) {
-        $.get('<?= Url::to("@web/walle/detection?projectId={$project->id}") ?>', function(o) {
+    jQuery(function ($) {
+        $.get('<?= Url::to("@web/walle/detection?projectId={$project->id}") ?>', function (o) {
             // 检测失败
             if (o.code) {
                 $('.alert').addClass('alert-danger').html(o.data)

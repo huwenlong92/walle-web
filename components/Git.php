@@ -11,7 +11,8 @@ namespace app\components;
 use app\models\Project;
 use app\models\Task as TaskModel;
 
-class Git extends Command {
+class Git extends Command
+{
 
     /**
      * 更新仓库
@@ -20,7 +21,8 @@ class Git extends Command {
      * @param string $gitDir
      * @return bool|int
      */
-    public function updateRepo($branch = 'master', $gitDir = null) {
+    public function updateRepo($branch = 'master', $gitDir = null)
+    {
         $gitDir = $gitDir ?: Project::getDeployFromDir();
         $dotGit = rtrim($gitDir, '/') . '/.git';
         // 存在git目录，直接pull
@@ -31,8 +33,7 @@ class Git extends Command {
             $cmd[] = sprintf('/usr/bin/env git reset -q --hard origin/%s', $branch);
             $command = join(' && ', $cmd);
             return $this->runLocalCommand($command);
-        }
-        // 不存在，则先checkout
+        } // 不存在，则先checkout
         else {
             $cmd[] = sprintf('mkdir -p %s ', $gitDir);
             $cmd[] = sprintf('cd %s ', $gitDir);
@@ -49,7 +50,8 @@ class Git extends Command {
      * @param TaskModel $task
      * @return bool
      */
-    public function updateToVersion(TaskModel $task) {
+    public function updateToVersion(TaskModel $task)
+    {
         // 先更新
         $destination = Project::getDeployWorkspace($task->link_id);
         $this->updateRepo($task->branch, $destination);
@@ -65,7 +67,8 @@ class Git extends Command {
      *
      * @return array
      */
-    public function getBranchList() {
+    public function getBranchList()
+    {
         $destination = Project::getDeployFromDir();
         // 应该先更新，不然在remote git删除当前选中的分支后，获取分支列表会失败
         $this->updateRepo('master', $destination);
@@ -88,10 +91,11 @@ class Git extends Command {
 
             // 只取远端的分支，排除当前分支
             if (strcmp(substr($item, 0, strlen($remotePrefix)), $remotePrefix) === 0
-                && strcmp(substr($item, 0, strlen($remoteHeadPrefix)), $remoteHeadPrefix) !== 0) {
+                && strcmp(substr($item, 0, strlen($remoteHeadPrefix)), $remoteHeadPrefix) !== 0
+            ) {
                 $item = substr($item, strlen($remotePrefix));
                 $history[] = [
-                    'id'      => $item,
+                    'id' => $item,
                     'message' => $item,
                 ];
             }
@@ -108,7 +112,8 @@ class Git extends Command {
      * @return array
      * @throws \Exception
      */
-    public function getCommitList($branch = 'master', $count = 20) {
+    public function getCommitList($branch = 'master', $count = 20)
+    {
         // 先更新
         $destination = Project::getDeployFromDir();
         $this->updateRepo($branch, $destination);
@@ -127,7 +132,7 @@ class Git extends Command {
         foreach ($list as $item) {
             $commitId = substr($item, 0, strpos($item, '-') - 1);
             $history[] = [
-                'id'      => $commitId,
+                'id' => $commitId,
                 'message' => $item,
             ];
         }
@@ -139,7 +144,8 @@ class Git extends Command {
      *
      * @return array
      */
-    public function getTagList($count = 20) {
+    public function getTagList($count = 20)
+    {
         // 先更新
         $this->updateRepo();
         $destination = Project::getDeployFromDir();
@@ -155,11 +161,11 @@ class Git extends Command {
         $list = explode(PHP_EOL, $this->getExeLog());
         foreach ($list as $item) {
             $history[] = [
-                'id'      => $item,
+                'id' => $item,
                 'message' => $item,
             ];
         }
         return $history;
     }
-    
+
 }

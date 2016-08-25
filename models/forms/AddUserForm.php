@@ -7,7 +7,8 @@ use yii\base\Model;
 use app\models\User;
 use app\models\queries\UserQuery;
 
-class AddUserForm extends Model {
+class AddUserForm extends Model
+{
 
     public $email;
     public $password;
@@ -24,9 +25,10 @@ class AddUserForm extends Model {
         ];
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['email',  'password', 'realname', 'role'], 'required'],
+            [['email', 'password', 'realname', 'role'], 'required'],
 
             ['email', 'email'],
 
@@ -37,7 +39,8 @@ class AddUserForm extends Model {
         ];
     }
 
-    public function signup() {
+    public function signup()
+    {
         if ($this->validate()) {
             $user = new User();
             $user->username = $this->email;

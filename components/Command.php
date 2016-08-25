@@ -8,7 +8,8 @@
  * *****************************************************************/
 namespace app\components;
 
-class Command {
+class Command
+{
 
     protected static $LOGDIR = '';
     /**
@@ -40,7 +41,8 @@ class Command {
      * @return $this
      * @throws \Exception
      */
-    public function __construct($config) {
+    public function __construct($config)
+    {
         if ($config) {
             $this->config = $config;
         } else {
@@ -54,7 +56,8 @@ class Command {
      * @param $command
      * @return bool|int true 成功，false 失败
      */
-    final public function runLocalCommand($command) {
+    final public function runLocalCommand($command)
+    {
         $command = trim($command);
         $this->log('---------------------------------');
         $this->log('---- Executing: $ ' . $command);
@@ -80,11 +83,12 @@ class Command {
     /**
      * 执行远程目标机器命令
      *
-     * @param string  $command
+     * @param string $command
      * @param integer $delay 每台机器延迟执行post_release任务间隔, 不推荐使用, 仅当业务无法平滑重启时使用
      * @return bool
      */
-    final public function runRemoteCommand($command, $delay = 0) {
+    final public function runRemoteCommand($command, $delay = 0)
+    {
         $this->log = '';
         $needTTY = '-T';
 
@@ -126,7 +130,8 @@ class Command {
      * @return $this
      * @throws \Exception
      */
-    public function setConfig($config) {
+    public function setConfig($config)
+    {
         if ($config) {
             $this->config = $config;
         } else {
@@ -139,11 +144,13 @@ class Command {
      * 获取配置
      * @return \walle\config\Config
      */
-    protected function getConfig() {
+    protected function getConfig()
+    {
         return $this->config;
     }
 
-    public static function log($message) {
+    public static function log($message)
+    {
         if (empty(\Yii::$app->params['log.dir'])) return;
 
         $logDir = \Yii::$app->params['log.dir'];
@@ -164,7 +171,8 @@ class Command {
      * @author wushuiyong
      * @return string
      */
-    public function getExeCommand() {
+    public function getExeCommand()
+    {
         return $this->command;
     }
 
@@ -174,7 +182,8 @@ class Command {
      * @author wushuiyong
      * @return string
      */
-    public function getExeLog() {
+    public function getExeLog()
+    {
         return $this->log;
     }
 
@@ -184,7 +193,8 @@ class Command {
      * @author wushuiyong
      * @return string
      */
-    public function getExeStatus() {
+    public function getExeStatus()
+    {
         return $this->status;
     }
 
@@ -193,7 +203,8 @@ class Command {
      *
      * @return int
      */
-    public static function getMs() {
+    public static function getMs()
+    {
         return intval(microtime(true) * 1000);
     }
 
@@ -203,7 +214,8 @@ class Command {
      * @param $host
      * @return mixed
      */
-    protected function getHostName($host) {
+    protected function getHostName($host)
+    {
         list($hostName,) = explode(':', $host);
         return $hostName;
     }
@@ -215,7 +227,8 @@ class Command {
      * @param int $default
      * @return int
      */
-    protected function getHostPort($host, $default = 22) {
+    protected function getHostPort($host, $default = 22)
+    {
         $hostInfo = explode(':', $host);
         return !empty($hostInfo[1]) ? $hostInfo[1] : $default;
     }

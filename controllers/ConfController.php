@@ -18,7 +18,8 @@ class ConfController extends Controller
      * @param \yii\base\Action $action
      * @return bool
      */
-    public function beforeAction($action) {
+    public function beforeAction($action)
+    {
         parent::beforeAction($action);
         if (!GlobalHelper::isValidAdmin()) {
             throw new \Exception(yii::t('conf', 'you are not active'));
@@ -30,7 +31,8 @@ class ConfController extends Controller
      * 配置项目列表
      *
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         // 显示该用户为管理员的所有项目
         $project = Project::find()
@@ -54,7 +56,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionPreview($projectId) {
+    public function actionPreview($projectId)
+    {
         $this->layout = 'modal';
         $project = $this->findModel($projectId);
 
@@ -70,7 +73,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionDetection($projectId) {
+    public function actionDetection($projectId)
+    {
         $this->layout = 'modal';
         $project = $this->findModel($projectId);
         return $this->render('detection', [
@@ -85,7 +89,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionGroup($projectId) {
+    public function actionGroup($projectId)
+    {
         // 配置信息
         $project = $this->findModel($projectId);
         // 添加用户
@@ -106,7 +111,7 @@ class ConfController extends Controller
             ->asArray()->all();
 
         return $this->render('group', [
-            'conf'  => $project,
+            'conf' => $project,
             'users' => $users,
             'group' => $group,
         ]);
@@ -119,7 +124,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionEdit($projectId = null) {
+    public function actionEdit($projectId = null)
+    {
         if ($projectId) {
             $project = $this->findModel($projectId);
         } else {
@@ -148,7 +154,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionCopy($projectId) {
+    public function actionCopy($projectId)
+    {
         $project = $this->findModel($projectId);
         // 复制为新项目
         $project->name .= ' - copy';
@@ -171,7 +178,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionDelete($projectId) {
+    public function actionDelete($projectId)
+    {
         $project = $this->findModel($projectId);
 
         if (!$project->delete()) throw new \Exception(yii::t('w', 'delete failed'));
@@ -190,7 +198,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionDeleteRelation($id) {
+    public function actionDeleteRelation($id)
+    {
         $group = Group::findOne($id);
         if (!$group) {
             throw new \Exception(yii::t('conf', 'relation not exists'));
@@ -207,7 +216,8 @@ class ConfController extends Controller
      * @return string
      * @throws \Exception
      */
-    public function actionEditRelation($id, $type = 0) {
+    public function actionEditRelation($id, $type = 0)
+    {
         $group = Group::findOne($id);
         if (!$group) {
             throw new \Exception(yii::t('conf', 'relation not exists'));
@@ -228,10 +238,11 @@ class ConfController extends Controller
      * @return the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Project::getConf($id)) !== null) {
             //判断是否为管理员
-            if(!Group::isAuditAdmin($this->uid, $model->id)){
+            if (!Group::isAuditAdmin($this->uid, $model->id)) {
                 throw new \Exception(yii::t('w', 'you are not admin of project'));
             }
             return $model;
@@ -245,7 +256,8 @@ class ConfController extends Controller
      * @return bool
      * @throws \Exception
      */
-    protected function _saveAnsibleHosts(Project $project) {
+    protected function _saveAnsibleHosts(Project $project)
+    {
 
         if (!$project->ansible) {
             // 未开启ansible, 不用保存

@@ -12,7 +12,8 @@ use app\models\Project;
 use app\models\Task as TaskModel;
 use yii\helpers\StringHelper;
 
-class Svn extends Command {
+class Svn extends Command
+{
 
     /**
      * 更新仓库
@@ -21,7 +22,8 @@ class Svn extends Command {
      * @param null $svnDir
      * @return bool|int
      */
-    public function updateRepo($branch = 'trunk', $svnDir = null) {
+    public function updateRepo($branch = 'trunk', $svnDir = null)
+    {
         $svnDir = $svnDir ?: Project::getDeployFromDir();
         $dotSvn = rtrim($svnDir, '/') . '/.svn';
 
@@ -49,7 +51,8 @@ class Svn extends Command {
      * @param TaskModel $task
      * @return bool|int
      */
-    public function updateToVersion(TaskModel $task) {
+    public function updateToVersion(TaskModel $task)
+    {
 
         // 先更新
         $versionSvnDir = rtrim(Project::getDeployWorkspace($task->link_id), '/');
@@ -67,7 +70,8 @@ class Svn extends Command {
      *
      * @return array
      */
-    public function getBranchList() {
+    public function getBranchList()
+    {
         // 更新
         $this->updateRepo();
         $list = [];
@@ -75,7 +79,7 @@ class Svn extends Command {
         // 分支模式
         if ($this->getConfig()->repo_mode == Project::REPO_MODE_BRANCH) {
             $branchDir = 'branches';
-            $trunkDir  = sprintf("%s/trunk", rtrim(Project::getDeployFromDir(), '/'));
+            $trunkDir = sprintf("%s/trunk", rtrim(Project::getDeployFromDir(), '/'));
 
             if (file_exists($trunkDir)) {
                 $list[] = [
@@ -120,7 +124,8 @@ class Svn extends Command {
      * @return array
      * @throws \Exception
      */
-    public function getCommitList($branch = 'trunk', $count = 30) {
+    public function getCommitList($branch = 'trunk', $count = 30)
+    {
         // 先更新
         $destination = Project::getDeployFromDir();
         $this->updateRepo($branch, $destination);
@@ -142,10 +147,11 @@ class Svn extends Command {
      *
      * @return array
      */
-    public function getTagList($count = 20) {
+    public function getTagList($count = 20)
+    {
         $branchesDir = sprintf("%s/tags", rtrim(Project::getDeployFromDir(), '/'));
         $list[] = [
-            'id'      => 'trunk',
+            'id' => 'trunk',
             'message' => 'trunk',
         ];
         if (!file_exists($branchesDir) && !$this->updateRepo()) {
@@ -158,7 +164,7 @@ class Svn extends Command {
             if ($branch->isDot() || $branch->isFile()) continue;
             if ('.svn' == $name) continue;
             $list[] = [
-                'id'      => $name,
+                'id' => $name,
                 'message' => $name,
             ];
         }
@@ -177,7 +183,8 @@ class Svn extends Command {
      * @return array
      * @throws \Exception
      */
-    public function getFileBetweenCommits($branch, $star, $end) {
+    public function getFileBetweenCommits($branch, $star, $end)
+    {
         // 先更新
         $destination = Project::getDeployFromDir();
         $this->updateRepo($branch, $destination);
@@ -191,7 +198,7 @@ class Svn extends Command {
 
         $list = [];
         $files = StringHelper::explode($this->getExeLog(), PHP_EOL);
-        $files = array_map(function($item) {
+        $files = array_map(function ($item) {
             return trim(substr($item, strpos($item, " ")));
         }, $files);
         // 排除点文件
@@ -213,7 +220,8 @@ class Svn extends Command {
      * @param $xmlString
      * @return array
      */
-    public static function formatXmlLog($xmlString) {
+    public static function formatXmlLog($xmlString)
+    {
         $history = [];
         $pos = strpos($xmlString, '<?xml');
         if ($pos > 0) {
@@ -222,7 +230,7 @@ class Svn extends Command {
         $xml = simplexml_load_string($xmlString);
         foreach ($xml as $item) {
             $attr = $item->attributes();
-            $id   = $attr->__toString();
+            $id = $attr->__toString();
 
             $history[$id] = [
                 'id' => $id,
@@ -240,7 +248,8 @@ class Svn extends Command {
      * @param Project $project
      * @return string
      */
-    public static function getBranchDir($branch, Project $project) {
+    public static function getBranchDir($branch, Project $project)
+    {
 
         $svnDir = Project::getDeployFromDir();
         if ($project->repo_mode == Project::REPO_MODE_NONTRUNK) {
@@ -261,7 +270,8 @@ class Svn extends Command {
      * @param $cmd
      * @return string
      */
-    private function _getSvnCmd($cmd) {
+    private function _getSvnCmd($cmd)
+    {
         return sprintf('/usr/bin/env LC_ALL=en_US.UTF-8 %s --username=%s --password=%s --non-interactive --trust-server-cert',
             $cmd, escapeshellarg($this->config->repo_username), escapeshellarg($this->config->repo_password));
     }

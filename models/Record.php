@@ -43,7 +43,7 @@ class Record extends \yii\db\ActiveRecord
     /**
      * 同步代码到服务器
      */
-    const ACTION_SYNC  = 78;
+    const ACTION_SYNC = 78;
 
     /**
      * 更新完所有目标机器时触发任务，最后一个得是100
@@ -96,17 +96,18 @@ class Record extends \yii\db\ActiveRecord
      * @param $duration
      * @return mixed
      */
-    public static function saveRecord(Command $commandObj, $task_id, $action, $duration) {
+    public static function saveRecord(Command $commandObj, $task_id, $action, $duration)
+    {
         $record = new static();
         $record->attributes = [
-            'user_id'    => \Yii::$app->user->id,
-            'task_id'    => $task_id,
-            'status'     => (int)$commandObj->getExeStatus(),
-            'action'     => $action,
+            'user_id' => \Yii::$app->user->id,
+            'task_id' => $task_id,
+            'status' => (int)$commandObj->getExeStatus(),
+            'action' => $action,
             'created_at' => time(),
-            'command'    => var_export($commandObj->getExeCommand(), true),
-            'memo'       => substr(var_export($commandObj->getExeLog(), true), 0, 65530),
-            'duration'   => $duration,
+            'command' => var_export($commandObj->getExeCommand(), true),
+            'memo' => substr(var_export($commandObj->getExeLog(), true), 0, 65530),
+            'duration' => $duration,
         ];
         return $record->save();
     }

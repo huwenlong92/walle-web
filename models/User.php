@@ -43,18 +43,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
 
     // 冻结
-    const STATUS_INVALID  = 0;
+    const STATUS_INVALID = 0;
 
     // 注册后默认状态（激活后即可用）或 其它admin认证前的状态
     const STATUS_ACTIVE = 1;
 
     // 管理员审核通过
-    const STATUS_ADMIN_ACTIVE   = 2;
+    const STATUS_ADMIN_ACTIVE = 2;
 
     /**
      * 开发者
      */
-    const ROLE_DEV   = 1;
+    const ROLE_DEV = 1;
 
     /**
      * 管理员
@@ -85,7 +85,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         return array_merge(parent::scenarios(), [
-            'signup' => ['username','email','password','role'],
+            'signup' => ['username', 'email', 'password', 'role'],
         ]);
     }
 
@@ -108,7 +108,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username','email','password','role'], 'required', 'on'=>'signup'],
+            [['username', 'email', 'password', 'role'], 'required', 'on' => 'signup'],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ADMIN_ACTIVE, self::STATUS_ACTIVE, self::STATUS_INVALID]],
@@ -121,19 +121,21 @@ class User extends ActiveRecord implements IdentityInterface
             ['username', 'string', 'min' => 2, 'max' => 255],
             [['avatar', 'realname'], 'string'],
             [['email', 'avatar'], 'filter', 'filter' => 'trim'],
-            ['email', 'validateEmail', 'on'=>'signup'],
-            ['email', 'email', 'on'=>'signup'],
-            ['email', 'unique', 'on'=>'signup'],
+            ['email', 'validateEmail', 'on' => 'signup'],
+            ['email', 'email', 'on' => 'signup'],
+            ['email', 'unique', 'on' => 'signup'],
         ];
     }
 
-    public function validateEmail($attribute, $params) {
+    public function validateEmail($attribute, $params)
+    {
         // 支持多邮箱绑定
         $mailSuffix = join('|@', \Yii::$app->params['mail-suffix']);
         if (!preg_match("/.*(@{$mailSuffix})$/", $this->$attribute)) {
             $this->addError($attribute, "没有" . join('，', \Yii::$app->params['mail-suffix']) . "邮箱不可注册：）");
         }
     }
+
     /**
      * @inheritdoc
      */
@@ -155,7 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
             $this->generateAuthKey();
             $this->generateEmailConfirmationToken();
             // 名字与邮箱
-             if (!$this->realname) {
+            if (!$this->realname) {
                 $this->realname = $this->username;
             }
             $this->username = $this->email;
@@ -214,7 +216,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Validates password
      *
-     * @param  string  $password password to validate
+     * @param  string $password password to validate
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
@@ -297,7 +299,8 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function getInactiveAdminList() {
+    public static function getInactiveAdminList()
+    {
         return static::find()
             ->where(['is_email_verified' => static::MAIL_ACTIVE, 'role' => static::ROLE_ADMIN, 'status' => static::STATUS_ACTIVE])
             ->asArray()->all();

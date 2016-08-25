@@ -194,7 +194,8 @@ class Ansible extends Command
      * @param array $hosts 可选的主机列表
      * @return bool|int
      */
-    public function copyFilesByAnsibleCopy($src, $dest, $hosts = []) {
+    public function copyFilesByAnsibleCopy($src, $dest, $hosts = [])
+    {
 
         $ansibleHosts = $this->_getAnsibleHosts($hosts);
 

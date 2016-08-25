@@ -5,6 +5,7 @@
 $this->title = $conf->name . yii::t('conf', 'edit');
 
 use yii\widgets\ActiveForm;
+
 ?>
 
 <div class="profile-user-info">
@@ -63,7 +64,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="profile-info-row">
-        <div class="profile-info-name"> webroot </div>
+        <div class="profile-info-name"> webroot</div>
 
         <div class="profile-info-value">
             <span><?= $conf->release_to ?></span>
@@ -91,7 +92,7 @@ use yii\widgets\ActiveForm;
 
     <h4 class="lighter"><i class="icon-tasks orange"></i><?= yii::t('conf', 'tasks') ?></h4>
     <div class="profile-info-row">
-        <div class="profile-info-name"> pre_deploy </div>
+        <div class="profile-info-name"> pre_deploy</div>
 
         <div class="profile-info-value">
             <span><?= str_replace(PHP_EOL, "<br>", $conf->pre_deploy) ?></span>
@@ -99,7 +100,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="profile-info-row">
-        <div class="profile-info-name"> post_deploy </div>
+        <div class="profile-info-name"> post_deploy</div>
 
         <div class="profile-info-value">
             <span><?= str_replace(PHP_EOL, "<br>", $conf->post_deploy) ?></span>
@@ -107,7 +108,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="profile-info-row">
-        <div class="profile-info-name"> pre_release </div>
+        <div class="profile-info-name"> pre_release</div>
 
         <div class="profile-info-value">
             <span><?= str_replace(PHP_EOL, "<br>", $conf->pre_release) ?></span>
@@ -115,7 +116,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="profile-info-row">
-        <div class="profile-info-name"> post_release </div>
+        <div class="profile-info-name"> post_release</div>
 
         <div class="profile-info-value">
             <span><?= str_replace(PHP_EOL, "<br>", $conf->post_release) ?></span>

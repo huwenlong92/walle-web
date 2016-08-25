@@ -44,7 +44,7 @@ class LoginForm extends Model
             if (!$user) {
                 return $this->addError('password', yii::t('user', 'inactive or ban'));
             }
-            
+
             if (!$user->validatePassword($this->password)) {
                 return $this->addError('password', yii::t('user', 'password error'));
             }
@@ -58,7 +58,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         } else {
             return false;
         }
