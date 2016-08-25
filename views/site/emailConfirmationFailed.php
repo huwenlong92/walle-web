@@ -15,7 +15,7 @@ $mail = Yii::$app->mail->messageConfig['from'];
     <h1>Could not complete registration</h1>
 
     <p>You either supplied an invalid confirmation link or the link has meanwhile expired.
-    Please contact our support under <?= Html::mailTo(key($mail), current($mail)) ?>.
+        Please contact our support under <?= Html::mailTo(key($mail), current($mail)) ?>.
     </p>
 
 </div>

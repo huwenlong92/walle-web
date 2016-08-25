@@ -33,7 +33,6 @@ class ConfController extends Controller
      */
     public function actionIndex()
     {
-
         // 显示该用户为管理员的所有项目
         $project = Project::find()
             ->leftJoin(Group::tableName(), '`group`.`project_id`=`project`.`id`')

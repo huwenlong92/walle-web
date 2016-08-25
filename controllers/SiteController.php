@@ -67,7 +67,7 @@ class SiteController extends Controller
                 Yii::$app->mail->compose('confirmEmail', ['user' => $user])
                     ->setFrom(Yii::$app->mail->messageConfig['from'])
                     ->setTo($user->email)
-                    ->setSubject('瓦力平台 - ' . $user->realname)
+                    ->setSubject('发布平台 - ' . $user->realname)
                     ->send();
                 Yii::$app->session->setFlash('user-signed-up');
                 return $this->refresh();

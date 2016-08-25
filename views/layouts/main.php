@@ -17,7 +17,7 @@ $userName = \Yii::$app->user->id ? $user->getName() : '';
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title><?= Html::encode($this->title) ?> - <?= yii::t('w', 'walle') ?></title>
+    <title><?= Html::encode($this->title) ?> - <?= yii::t('w', 'henly') ?></title>
     <link href="<?= Url::to('@web/dist/css/bootstrap.min.css') ?>" rel="stylesheet"/>
     <link href="<?= Url::to('@web/dist/css/font-awesome.min.css') ?>" rel="stylesheet"/>
 
@@ -73,7 +73,7 @@ $userName = \Yii::$app->user->id ? $user->getName() : '';
     <div class="navbar-container" id="navbar-container">
         <div class="navbar-header pull-left">
             <a href="javascript:;" class="navbar-brand">
-                <small>Walle</small>
+                <small>发布平台</small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
 

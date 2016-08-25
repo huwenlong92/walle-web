@@ -11,7 +11,8 @@ use yii\helpers\Url;
     <div class="row col-sm-4">
         <h4 class="pink">
             <i class="icon-hand-right green"></i>
-            <a href="javascript:;" role="button" class="blue" data-toggle="modal"> <span class="green"> <?= yii::t('user', 'projecter audit') ?> </a>
+            <a href="javascript:;" role="button" class="blue" data-toggle="modal"> <span
+                    class="green"> <?= yii::t('user', 'projecter audit') ?> </a>
         </h4>
     </div>
 </div>
@@ -23,7 +24,7 @@ use yii\helpers\Url;
             <div class="inline position-relative">
                 <div class="user">
                     <a href="javascript:;">
-                        <img src="<?= Url::to('@web' . User::AVATAR_ROOT) .($user['avatar'] ?: 'default.jpg') ?>">
+                        <img src="<?= Url::to('@web' . User::AVATAR_ROOT) . ($user['avatar'] ?: 'default.jpg') ?>">
                     </a>
                 </div>
 
@@ -44,7 +45,8 @@ use yii\helpers\Url;
                         <div class="hr dotted hr-8"></div>
 
                         <div class="tools action-buttons">
-                            <a href="javascript:;" class="active-admin" data-id="<?= $user['id'] ?>" title="<?= yii::t('user', 'projecter audit tip') ?>">
+                            <a href="javascript:;" class="active-admin" data-id="<?= $user['id'] ?>"
+                               title="<?= yii::t('user', 'projecter audit tip') ?>">
                                 <i class="icon-user-md light-orange bigger-110"></i>
                                 <?= yii::t('user', 'pass projecter audit') ?>
                             </a>
@@ -58,12 +60,12 @@ use yii\helpers\Url;
 </div>
 
 <script>
-    jQuery(function($) {
+    jQuery(function ($) {
         // 组关系删除
-        $('.remove-relation').click(function(e) {
+        $('.remove-relation').click(function (e) {
             $this = $(this);
             if (confirm('<?= yii::t('w', 'js delete confirm') ?>')) {
-                $.get(' <?= Url::to('@web/user/delete-admin?id=') ?>' + $this.data('id'), function(o) {
+                $.get(' <?= Url::to('@web/user/delete-admin?id=') ?>' + $this.data('id'), function (o) {
                     if (!o.code) {
                         $this.closest(".memberdiv").remove();
                     } else {
@@ -73,11 +75,11 @@ use yii\helpers\Url;
             }
         })
         // 组关系成员设为管理员
-        $('.active-admin').click(function(e) {
+        $('.active-admin').click(function (e) {
             $this = $(this);
             var url = '<?= Url::to('@web/user/active-admin') ?>'
                 + '?id=' + $this.data('id');
-            $.get(url , function(o) {
+            $.get(url, function (o) {
                 if (!o.code) {
                     alert('<?= yii::t('user', 'js pass') ?>')
                     location.reload()
@@ -87,12 +89,12 @@ use yii\helpers\Url;
             })
         })
         // 浮出层
-        $('#relation-users .memberdiv').on('mouseenter', function(){
+        $('#relation-users .memberdiv').on('mouseenter', function () {
             var $this = $(this);
             var place = 'right';
 
             $this.find('.popover').removeClass('right left').addClass(place);
-        }).on('click', function() {
+        }).on('click', function () {
             return false;
         });
 

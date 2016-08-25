@@ -5,6 +5,7 @@
 $this->title = yii::t('walle', 'deploying');
 use \app\models\Task;
 use yii\helpers\Url;
+
 ?>
 <style>
     .status > span {
@@ -13,9 +14,11 @@ use yii\helpers\Url;
         width: 14%;
         text-align: right;
     }
+
     .btn-deploy {
         margin-left: 30px;
     }
+
     .btn-return {
         /*float: right;*/
         margin-left: 30px;
@@ -23,16 +26,19 @@ use yii\helpers\Url;
 </style>
 <div class="box" style="height: 100%">
     <h4 class="box-title header smaller red">
-            <i class="icon-map-marker"></i><?= \Yii::t('w', 'conf_level_' . $task->project['level']) ?>
-            -
-            <?= $task->project->name ?>
-            ：
-            <?= $task->title ?>
-            （<?= $task->project->repo_mode . ':' . $task->branch ?> <?= yii::t('walle', 'version') ?><?= $task->commit_id ?>）
-            <?php if (in_array($task->status, [Task::STATUS_PASS, Task::STATUS_FAILED])) { ?>
-                <button type="submit" class="btn btn-primary btn-deploy" data-id="<?= $task->id ?>"><?= yii::t('walle', 'deploy') ?></button>
-            <?php } ?>
-            <a class="btn btn-success btn-return" href="<?= Url::to('@web/task/index') ?>"><?= yii::t('walle', 'return') ?></a>
+        <i class="icon-map-marker"></i><?= \Yii::t('w', 'conf_level_' . $task->project['level']) ?>
+        -
+        <?= $task->project->name ?>
+        ：
+        <?= $task->title ?>
+        （<?= $task->project->repo_mode . ':' . $task->branch ?> <?= yii::t('walle', 'version') ?><?= $task->commit_id ?>
+        ）
+        <?php if (in_array($task->status, [Task::STATUS_PASS, Task::STATUS_FAILED])) { ?>
+            <button type="submit" class="btn btn-primary btn-deploy"
+                    data-id="<?= $task->id ?>"><?= yii::t('walle', 'deploy') ?></button>
+        <?php } ?>
+        <a class="btn btn-success btn-return"
+           href="<?= Url::to('@web/task/index') ?>"><?= yii::t('walle', 'return') ?></a>
     </h4>
     <div class="status">
         <span><i class="fa fa-circle-o text-yellow step-1"></i><?= yii::t('walle', 'process_detect') ?></span>
@@ -40,14 +46,17 @@ use yii\helpers\Url;
         <span><i class="fa fa-circle-o text-yellow step-3"></i><?= yii::t('walle', 'process_checkout') ?></span>
         <span><i class="fa fa-circle-o text-yellow step-4"></i><?= yii::t('walle', 'process_post-deploy') ?></span>
         <span><i class="fa fa-circle-o text-yellow step-5"></i><?= yii::t('walle', 'process_rsync') ?></span>
-        <span style="width: 28%"><i class="fa fa-circle-o text-yellow step-6"></i><?= yii::t('walle', 'process_update') ?></span>
+        <span style="width: 28%"><i
+                class="fa fa-circle-o text-yellow step-6"></i><?= yii::t('walle', 'process_update') ?></span>
     </div>
     <div style="clear:both"></div>
     <div class="progress progress-small progress-striped active">
-        <div class="progress-bar progress-status progress-bar-success" style="width: <?= $task->status == Task::STATUS_DONE ? 100 : 0 ?>%;"></div>
+        <div class="progress-bar progress-status progress-bar-success"
+             style="width: <?= $task->status == Task::STATUS_DONE ? 100 : 0 ?>%;"></div>
     </div>
 
-    <div class="alert alert-block alert-success result-success" style="<?= $task->status != Task::STATUS_DONE ? 'display: none' : '' ?>">
+    <div class="alert alert-block alert-success result-success"
+         style="<?= $task->status != Task::STATUS_DONE ? 'display: none' : '' ?>">
         <h4><i class="icon-thumbs-up"></i><?= yii::t('walle', 'done') ?></h4>
         <p><?= yii::t('walle', 'done praise') ?></p>
 
@@ -64,15 +73,15 @@ use yii\helpers\Url;
 </div>
 
 <script type="text/javascript">
-    $(function() {
-        $('.btn-deploy').click(function() {
+    $(function () {
+        $('.btn-deploy').click(function () {
             $this = $(this);
             $this.addClass('disabled');
             var task_id = $(this).data('id');
             var action = '';
             var detail = '';
             var timer;
-            $.post("<?= Url::to('@web/walle/start-deploy') ?>", {taskId: task_id}, function(o) {
+            $.post("<?= Url::to('@web/walle/start-deploy') ?>", {taskId: task_id}, function (o) {
                 action = o.code ? o.msg + ':' : '';
                 if (o.code != 0) {
                     clearInterval(timer);
@@ -117,11 +126,12 @@ use yii\helpers\Url;
                     }
                 });
             }
+
             timer = setInterval(getProcess, 600);
         })
 
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "//hm.baidu.com/hm.js?5fc7354aff3dd67a6435818b8ef02b52";
             var s = document.getElementsByTagName("script")[0];

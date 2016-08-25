@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'w' => 'Walle 瓦力平台',
+    'w' => 'Henly 发布平台',
     'w platform' => '平台',
 
     'bool_0' => 'No',
